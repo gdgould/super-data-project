@@ -145,3 +145,19 @@
 
 (defn -main [stringified-table]
   (println (parse-airline-data-table stringified-table)))
+
+
+;; I'm not sure if this is part of the project requirement, but 
+;;   I've added it for completeness.
+
+(defn parse-and-re-stringify
+  "Parses the stringified table, but then re-stringifies."
+  [table-as-str]
+  (let [new-header "Airline Code;DelayTimes;FlightCodes;To;From"
+        
+        parsed (parse-airline-data-table table-as-str)
+        parsed-as-str (->> parsed
+                           (map #(map (comp str val) %))
+                           (map (partial str/join ";"))
+                           (str/join "\n"))]
+    (str new-header "\n" parsed-as-str)))

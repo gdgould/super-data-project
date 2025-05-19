@@ -64,3 +64,14 @@
           data (str/join "\n" [data-headers line1 line2 line3 line2])]
       (is (= [1220 1230 84 94]
              (map :flight-code (main/parse-airline-data-table data)))))))
+
+
+(deftest parse-and-re-stringify-test
+  (testing "Happy path (example data)"
+    (is (= (str "Airline Code;DelayTimes;FlightCodes;To;From\n"
+                "Air Canada;[21 40];20015;Waterloo;Newyork\n"
+                "Air France;[];20025;Montreal;Toronto\n"
+                "Porter Airways;[60 22 87];20035;Calgary;Ottawa\n"
+                "Air France;[78 66];20045;Ottawa;Vancouver\n"
+                "Lufthansa;[12 33];20055;London;Montreal")
+           (main/parse-and-re-stringify sample-data)))))
