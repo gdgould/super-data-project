@@ -45,7 +45,7 @@
     ;; read-string will read vectors like [1, 2] as valid clojure vectors of integers
     :parser edn/read-string}
    {:column-name :flight-code
-    ;; Parse the float-as-string using bigint, then cast to an integer.  Ignore nils
+    ;; Parse the float-as-string using bigdec, then cast to an integer.  Ignore nils
     :parser (fn [s] (some-> s bigdec int))}
    {:column-name :to-from
     ;; Don't parse for now.  We'll split this data further later
@@ -97,7 +97,7 @@
         ([result] (xf result))
         ([result input]
          (let [fcode (:flight-code input)
-               ;; Use the input's code if it has one, else fall back on the previous code
+               ;; Use the input's code if it has one, else fall back to the previous code + 10
                _ (if fcode
                    (reset! current-code fcode)
                    (swap! current-code + 10))
